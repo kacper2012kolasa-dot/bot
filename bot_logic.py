@@ -1,5 +1,7 @@
 from random import randint as rnum
 import random
+import os
+import requests
 
 def monet():
     å = rnum(1, 2)
@@ -33,3 +35,18 @@ def generuj_haslo(dlugosc: int) -> str:
     for _ in range(dlugosc):
         haslo += random.choice(znaki)
     return haslo
+
+def randomowy_mem() -> str:
+    """Zwraca losowy mem z lokalnego katalogu 'memy'."""
+    memy_folder = 'meme'
+    memy_pliki = os.listdir('katalog_meme')
+    if not memy_pliki:
+        return "Brak memów w katalogu."
+    wybrany_mem = random.choice(memy_pliki)
+    return os.path.join('katalog_meme', wybrany_mem)
+
+def losowy_pies() -> str:
+    url = "https://random.dog/woof.json"
+    req = requests.get(url)
+    data = req.json()
+    return data['url']  # Zwraca URL do losowego obrazka psa

@@ -44,13 +44,27 @@ async def on_member_join(member: discord.Member):
     channel = discord.utils.get(member.guild.text_channels, name="powitania")
     if channel is not None:
         await channel.send(f"Witaj {member.mention} na serwerze! 🎉 Miłego pobytu.")
-@tree.command(name="youtube", description="Szukaj filmów na YouTube")
-@app_commands.describe(query="Czego szukasz?")
+@tree.command(name="youtube", description="Search for youtube video")
+@app_commands.describe(query="What do you want to search?")
 async def cmd_youtube(interaction: discord.Interaction, query: str):
     search = VideosSearch(query, limit=1)
     wynik = search.result()
     if wynik['result']:
         link = wynik['result'][0]['link']
-        await interaction.response.send_message(f"Oto pierwszy wynik wyszukiwania dla '{query}': {link}")
+        await interaction.response.send_message(f"this is the first result for '{query}': {link}")
+
+@tree.command(name="meme", description="sends a random meme")
+async def cmd_meme(interaction: discord.Interaction):
+    mem_path = randomowy_mem()
+    if mem_path == "Brak memów w katalogu.":
+        await interaction.response.send_message(mem_path)
+    else:
+        await interaction.response.send_message(file=discord.File(mem_path))
+
+
+@tree.command(name="dog", description="sends a random dog picture")
+async def cmd_pies(interaction: discord.Interaction):
+    url = losowy_pies()
+    await interaction.response.send_message(url)
 
 client.run("YOUR_BOT_TOKEN_HERE")
